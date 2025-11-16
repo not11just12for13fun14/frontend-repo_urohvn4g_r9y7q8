@@ -5,12 +5,15 @@ import Community from '../components/Community'
 import Testimonials from '../components/Testimonials'
 import CTA from '../components/CTA'
 import Footer from '../components/Footer'
+import ProRoster from '../components/ProRoster'
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#0a0218]">
       <Navbar />
       <Hero />
+      {/* Sezione Carte Pro */}
+      <ProRoster />
       {/* Video Presentazione */}
       <section className="relative bg-[#0a0218] py-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(236,72,153,.08),transparent_60%)]" />
