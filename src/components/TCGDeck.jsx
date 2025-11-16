@@ -15,16 +15,8 @@ const cards = [
     crest: Brain,
     color: 'from-fuchsia-500/30 via-violet-500/30 to-cyan-500/30',
     affinity: ['Mind', 'Calm'],
-    abilities: [
-      {
-        name: 'Rituale Pre-Match',
-        text: 'Riduci ansia e +2 Focus al tuo Capitano questo turno.'
-      },
-      {
-        name: 'Biofeedback',
-        text: 'Trasforma 1 stress in 1 energia riserva.'
-      }
-    ]
+    description:
+      'Riduce l’ansia pre-match e aumenta il focus del team con rituali mirati. Ottima per playstyle controllati e decision making rapido.'
   },
   {
     id: 'coach-1',
@@ -38,10 +30,8 @@ const cards = [
     crest: Swords,
     color: 'from-amber-400/30 via-rose-500/30 to-fuchsia-500/30',
     affinity: ['Team', 'Aim'],
-    abilities: [
-      { name: 'Shot Caller', text: '+1 a tutti i compagni. Se coordinati, pesca 1.' },
-      { name: 'Drill Mentale', text: 'Il prossimo errore non consuma Focus.' }
-    ]
+    description:
+      'Leader di shot-calling e macro; potenzia il coordinamento e mitiga gli errori critici. Sinergia elevata con ruoli Capitano e Support.'
   },
   {
     id: 'therapist-1',
@@ -55,10 +45,8 @@ const cards = [
     crest: Shield,
     color: 'from-cyan-400/30 via-emerald-400/30 to-fuchsia-500/30',
     affinity: ['Calm', 'Recovery'],
-    abilities: [
-      { name: 'Sleep Reset', text: 'Rigenera 2. Se notturna, aggiungi 1 extra.' },
-      { name: 'Grounding', text: 'Silenzia tilt su un alleato.' }
-    ]
+    description:
+      'Specialista in recupero e gestione del tilt: resetta il sonno, stabilizza l’umore e protegge nei momenti di pressione.'
   },
   {
     id: 'mindset-1',
@@ -72,10 +60,8 @@ const cards = [
     crest: Flame,
     color: 'from-violet-500/30 via-fuchsia-500/30 to-sky-500/30',
     affinity: ['Flow', 'Creativity'],
-    abilities: [
-      { name: 'State Shift', text: 'Converti 1 paura in 1 audacia.' },
-      { name: 'Momentum', text: '+2 ATK se hai pescato 2+ questa mano.' }
-    ]
+    description:
+      'Trasforma paure in audacia e attiva momentum creativo. Ideale per team che puntano a picchi di performance rapidi.'
   },
   {
     id: 'mentor-2',
@@ -89,10 +75,8 @@ const cards = [
     crest: Star,
     color: 'from-indigo-400/30 via-fuchsia-400/30 to-rose-400/30',
     affinity: ['Insight', 'Data'],
-    abilities: [
-      { name: 'VHS Review', text: 'Guarda il topdeck, puoi riposizionarlo.' },
-      { name: 'Clutch Sense', text: '+1 DEF se sotto pressione.' }
-    ]
+    description:
+      'Analisi predittiva e revisioni mirate: anticipa le giocate avversarie e ottimizza le scelte tattiche con insight data-driven.'
   }
 ]
 
@@ -161,11 +145,10 @@ function StatChip({ label, value }) {
   )
 }
 
-function Ability({ name, text }) {
+function Description({ text }) {
   return (
     <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2">
-      <div className="text-[11px] font-semibold text-white">{name}</div>
-      <div className="mt-0.5 text-[10px] text-white/70">{text}</div>
+      <div className="text-[11px] text-white/80 leading-relaxed">{text}</div>
     </div>
   )
 }
@@ -177,17 +160,19 @@ function CardBack() {
       <div className="absolute inset-[1px] rounded-[20px] bg-gradient-to-br from-fuchsia-500/10 via-violet-500/10 to-cyan-400/10" />
       <div className="absolute inset-[2px] rounded-[18px] bg-[#0b0618]" />
 
-      {/* Holographic grid */}
+      {/* Classic diamond pattern */}
       <motion.div
         className="absolute inset-0 rounded-[18px]"
-        animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
+        animate={{ backgroundPosition: ['0px 0px, 0px 0px', '14px 14px, -14px -14px'] }}
         transition={{ repeat: Infinity, duration: 16, ease: 'linear' }}
         style={{
           backgroundImage:
-            'linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(0deg, rgba(255,255,255,0.06) 1px, transparent 1px)',
-          backgroundSize: '18px 18px',
-          maskImage: 'radial-gradient(circle at 50% 50%, black 55%, transparent 90%)',
-          WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 55%, transparent 90%)'
+            'linear-gradient(45deg, rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(-45deg, rgba(255,255,255,0.07) 1px, transparent 1px)',
+          backgroundSize: '14px 14px, 14px 14px',
+          backgroundPosition: '0 0, 0 0',
+          maskImage: 'radial-gradient(circle at 50% 50%, black 60%, transparent 92%)',
+          WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 60%, transparent 92%)',
+          opacity: 0.9
         }}
       />
 
@@ -346,11 +331,9 @@ function TCGCard({ data, index }) {
             </div>
           </div>
 
-          {/* Abilities list */}
+          {/* Single description */}
           <div className="relative z-10 mt-2 space-y-2">
-            {data.abilities.map((a) => (
-              <Ability key={a.name} name={a.name} text={a.text} />
-            ))}
+            <Description text={data.description} />
           </div>
 
           {/* Footer tags */}
@@ -366,7 +349,7 @@ function TCGCard({ data, index }) {
           </div>
         </motion.div>
 
-        {/* BACK (true card back artwork) */}
+        {/* BACK (classic diamond card back) */}
         <CardBack />
       </motion.div>
     </motion.div>
@@ -383,7 +366,7 @@ export default function TCGDeck() {
         <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">Roster TCG – Mentori</h2>
-            <p className="mt-2 max-w-2xl text-white/70">Cartucce da gioco, non semplici card UI. Ogni mentore ha costo, rarità, statistiche e abilità sinergiche.</p>
+            <p className="mt-2 max-w-2xl text-white/70">Cartucce da gioco, non semplici card UI. Ogni mentore ha costo, rarità, statistiche e affinità; la descrizione riassume il ruolo in partita.</p>
           </div>
           <div className="flex items-center gap-3">
             <button className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/90 hover:bg-white/10">Collezione</button>
