@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Crown, Swords, Brain, Shield, Flame, Sparkles, Heart, Star } from 'lucide-react'
+import { Crown, Swords, Brain, Shield, Flame, Sparkles, Star } from 'lucide-react'
 
 const cards = [
   {
@@ -127,7 +127,7 @@ function ManaOrb({ cost }) {
   )
 }
 
-function FoilLayer({ color }) {
+function FoilLayer() {
   return (
     <motion.div
       aria-hidden
@@ -170,6 +170,95 @@ function Ability({ name, text }) {
   )
 }
 
+function CardBack() {
+  return (
+    <div className="absolute inset-0 rounded-[22px] overflow-hidden" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+      {/* Base layers */}
+      <div className="absolute inset-[1px] rounded-[20px] bg-gradient-to-br from-fuchsia-500/10 via-violet-500/10 to-cyan-400/10" />
+      <div className="absolute inset-[2px] rounded-[18px] bg-[#0b0618]" />
+
+      {/* Holographic grid */}
+      <motion.div
+        className="absolute inset-0 rounded-[18px]"
+        animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
+        transition={{ repeat: Infinity, duration: 16, ease: 'linear' }}
+        style={{
+          backgroundImage:
+            'linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(0deg, rgba(255,255,255,0.06) 1px, transparent 1px)',
+          backgroundSize: '18px 18px',
+          maskImage: 'radial-gradient(circle at 50% 50%, black 55%, transparent 90%)',
+          WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 55%, transparent 90%)'
+        }}
+      />
+
+      {/* Rotating foil shine */}
+      <FoilLayer />
+
+      {/* Corner sigils */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute left-3 top-3 h-8 w-8 grid place-items-center rounded-lg border border-white/10 bg-white/5 text-white/80">
+          <Crown size={14} />
+        </div>
+        <div className="absolute right-3 top-3 h-8 w-8 grid place-items-center rounded-lg border border-white/10 bg-white/5 text-white/80">
+          <Sparkles size={14} />
+        </div>
+        <div className="absolute left-3 bottom-3 h-8 w-8 grid place-items-center rounded-lg border border-white/10 bg-white/5 text-white/80">
+          <Sparkles size={14} />
+        </div>
+        <div className="absolute right-3 bottom-3 h-8 w-8 grid place-items-center rounded-lg border border-white/10 bg-white/5 text-white/80">
+          <Crown size={14} />
+        </div>
+      </div>
+
+      {/* Center sigil + brand */}
+      <div className="relative z-10 h-full w-full grid place-items-center">
+        <div className="relative grid place-items-center">
+          {/* Radial aura */}
+          <motion.div
+            className="absolute -inset-14 rounded-full"
+            animate={{ opacity: [0.45, 0.7, 0.45], scale: [1, 1.05, 1] }}
+            transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
+            style={{
+              background:
+                'radial-gradient(closest-side, rgba(236,72,153,.2), rgba(99,102,241,.16), rgba(56,189,248,.1), transparent)'
+            }}
+          />
+
+          {/* Crest ring */}
+          <motion.div
+            className="relative h-28 w-28 rounded-full border border-white/15 bg-black/40 backdrop-blur-md shadow-xl shadow-fuchsia-500/10"
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 24, ease: 'linear' }}
+            style={{
+              backgroundImage:
+                'conic-gradient(from 0deg, rgba(236,72,153,.15), rgba(99,102,241,.15), rgba(56,189,248,.15), rgba(236,72,153,.15))'
+            }}
+          >
+            <div className="absolute inset-[3px] rounded-full bg-[#0b0618] grid place-items-center">
+              <div className="grid place-items-center text-white/90">
+                <Crown size={28} />
+                <div className="mt-1 text-xs tracking-[0.2em] text-white/70">HEALPLAY</div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Slogan */}
+          <div className="mt-5 text-center">
+            <div className="text-[10px] tracking-widest text-white/60">TRADING CARD GAME</div>
+            <div className="mt-1 text-sm font-semibold text-white/90">Il tuo safe space nel mondo del gaming</div>
+            <div className="text-xs text-white/60">Trova il tuo checkpoint</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Serial line */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] text-white/70">
+        Serie: Alpha • HB-001 • © Healplay
+      </div>
+    </div>
+  )
+}
+
 function TCGCard({ data, index }) {
   const [hovered, setHovered] = useState(false)
   const [flipped, setFlipped] = useState(false)
@@ -204,7 +293,7 @@ function TCGCard({ data, index }) {
           <div className="absolute inset-[2px] rounded-[18px] bg-[#0d081d]" />
 
           {/* Foil shimmer */}
-          <FoilLayer color={data.color} />
+          <FoilLayer />
 
           {/* Top bar */}
           <div className="relative z-10 flex items-center justify-between">
@@ -277,45 +366,8 @@ function TCGCard({ data, index }) {
           </div>
         </motion.div>
 
-        {/* BACK */}
-        <motion.div
-          className="absolute inset-0 p-3"
-          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-        >
-          <div className="absolute inset-[1px] rounded-[20px] bg-gradient-to-br from-white/5 to-white/0" />
-          <div className="absolute inset-[2px] rounded-[18px] bg-[#0b0618]" />
-          <FoilLayer />
-
-          <div className="relative z-10 h-full flex flex-col">
-            <div className="flex items-center justify-between">
-              <div className="text-xs tracking-widest text-white/60">{data.class}</div>
-              <div className="text-xs text-white/60">Serie: Healplay Alpha</div>
-            </div>
-
-            <div className="mt-3 text-[11px] leading-relaxed text-white/80">
-              Profilo: orientata a {data.affinity.join(' + ')}. Ideale per playstyle che richiedono controllo emotivo e decision making rapido. Sinergizza con ruoli Support e Capitano.
-            </div>
-
-            <div className="mt-3 grid grid-cols-2 gap-2">
-              <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2">
-                <div className="text-[10px] font-semibold text-white">Combo</div>
-                <div className="mt-1 text-[10px] text-white/70">Se giochi questa carta dopo un Allenamento, pesca 1 e guadagni +1 Focus.</div>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2">
-                <div className="text-[10px] font-semibold text-white">Debolezza</div>
-                <div className="mt-1 text-[10px] text-white/70">Vulnerabile a Burnout: se la mano è vuota, -1 DEF.</div>
-              </div>
-            </div>
-
-            <div className="mt-auto flex items-center justify-between">
-              <div className="text-[10px] text-white/50">© Healplay TCG – Proto</div>
-              <div className="inline-flex items-center gap-2 text-[10px] text-white/70">
-                <Sparkles size={12} />
-                <span>Foil</span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        {/* BACK (true card back artwork) */}
+        <CardBack />
       </motion.div>
     </motion.div>
   )
