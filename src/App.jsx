@@ -2,6 +2,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Features from './components/Features'
 import Community from './components/Community'
+import Testimonials from './components/Testimonials'
 import CTA from './components/CTA'
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Hero />
       <Features />
       <Community />
+      <Testimonials />
       <CTA />
       <footer className="bg-[#090114] border-t border-white/10">
         <div className="mx-auto max-w-7xl px-6 py-8 text-center text-white/60">
